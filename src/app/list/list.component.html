@@ -1,0 +1,104 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <div class=" col-sm-4  ">
+    <form *ngIf="!edit" class="form-inline mt-2" name="form" [formGroup]="form" (ngSubmit)="addList()">
+        <div class="form-group mb-2 ">
+        <div class="form-group mx-sm-3 mb-2">
+          <input type="text" class="form-control shadow" id="myInput"  placeholder="Enter Name of list" 
+            formControlName="name">
+          </div>
+          </div>
+        <button type="submit" [disabled]="form.invalid" class="btn btn-primary mb-3 shadow">Add</button>
+      </form>
+
+
+      <form *ngIf="edit" class="form-inline mt-2" name="editForm" [formGroup]="editForm" (ngSubmit)="updateList()">
+          <div class="form-group mb-2 ">
+          <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control shadow" id="myInput"  placeholder="Enter Name of list" 
+              formControlName="name" >
+            </div>
+            </div>
+            <h4>{{ListData}}</h4>
+          <button type="submit" [disabled]="editForm.invalid" class="btn btn-primary mb-3 shadow">Update</button>
+        </form>
+
+ 
+  <table class="table table-striped table-hover w-100 mt-1 shadow rounded">
+      <thead>
+          <tr>
+            <th>Name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+      <tr *ngFor="let list of Lists; let i = index" (click)="setClickedRow(i)" [class.active]="i == selectedRow" class="shadow">
+       <td class=" w-75" (click)="todosOfList(list._id)">{{list.name}}</td>
+       <td> <span  class="mx-2 rounded-circle text-primary shadow-lg" (click)="editList(list._id, list.name)"><i class="fa fa-pencil" aria-hidden="true"></i></span></td>
+       <td><span class="mx-2 rounded-circle text-danger shadow-lg"  (click)="delete(list._id)"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+      </tr>
+    </table > 
+        </div>
+
+
+        <div *ngIf="showTodos" class="col-sm-8 ">
+            <form *ngIf="!todoEdit"  class="form-inline mt-2" name="todoForm" [formGroup]="todoForm" (ngSubmit)="addTodo()">
+                <div class="form-group mb-2 ">
+                <div class="form-group mx-sm-3 mb-2">
+                  <input type="text" class="form-control shadow"  placeholder="Enter title " 
+                    formControlName="title" >
+                  </div>
+                  </div>
+                  <div class="form-group mb-3">
+                      <div class="input-group ">
+                        <input class="form-control shadow"  formControlName="dueDate" placeholder="yyyy-mm-dd"
+                               ngbDatepicker #dueDate="ngbDatepicker">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary p-1 mx-1 " (click)="dueDate.toggle()" type="button"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+                        </div>
+                      </div>
+                    </div>
+              <button type="submit" [disabled]="todoForm.invalid" class="btn btn-primary mb-3 shadow">Add Todo</button>
+              </form>
+
+              <form *ngIf="todoEdit"  class="form-inline mt-2" name="todoEditForm" [formGroup]="todoEditForm" (ngSubmit)="updateTodo()">
+                  <div class="form-group mb-2 ">
+                  <div class="form-group mx-sm-3 mb-2">
+                    <input type="text" class="form-control shadow"  placeholder="Enter title " 
+                      formControlName="title" >
+                    </div>
+                    </div>
+                    
+                <button type="submit" [disabled]="todoEditForm.invalid" class="btn btn-primary mb-3 shadow">Update Todo</button>
+                </form>
+
+
+
+            <table *ngIf="Todos.length > 0" class="table table-striped table-hover w-100 mt-1 shadow rounded">
+                <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Date</th>
+                      <th>Edit</th>
+                      <th>Delete</th>
+                    </tr>
+                  </thead>
+              <!------todo-list---------->
+                <tr *ngFor="let todo of Todos" class="shadow">
+                  <td *ngIf="todo.marked" class="text-primary" ><i class="fa fa-check" aria-hidden="true" (click)="markTodo(todo._id, todo.marked)"></i></td>
+                  <td *ngIf="!todo.marked" class="text-danger"><i class="fa fa-times" aria-hidden="true" (click)="markTodo(todo._id, todo.marked)"></i></td>
+                 <td class=" w-75">{{todo.title}}</td>
+                 <td class=" w-25">{{todo.dueDate | date}}</td>
+                 <td> <span  class="mx-2 rounded-circle text-primary shadow-lg" (click)="editTodo(todo._id, todo.title)"><i class="fa fa-pencil" aria-hidden="true"></i></span></td>
+                 <td><span class="mx-2 rounded-circle text-danger shadow-lg"  (click)="deleteTodo(todo._id)"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+                </tr>
+              </table >
+
+
+        </div>
+
+
+
+  </div>
+  </div>
